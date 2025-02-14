@@ -1,16 +1,14 @@
+import java.io.*;
 import java.util.ArrayList;
-import java.io.*;  
 import java.util.Scanner;
-import javax.security.auth.Subject;
 
 public class GameList{
-    ArrayList<Game> superBowls = new ArrayList<Game>();
+    ArrayList<Game> superBowls;
 
-    File file = new File("src/main/java/SuperBowlData.txt");
-    Scanner text = new Scanner(file);
+    public GameList(Scanner text) throws Exception{
+        superBowls = new ArrayList<Game>();
 
-    public GameList() throws Exception{
-        while text.hasNextLine(){
+        while (text.hasNextLine()){
             String str = text.nextLine();
             int yearStart = str.indexOf(",");
             int yearComma = str.indexOf(",", yearStart + 1);
@@ -22,9 +20,14 @@ public class GameList{
             int locationComma = str.indexOf(",", locationStart + 1);
 
             String numeral = str.substring(0, yearStart);
-            String year = str.substring(yearComma + 2, winnerStart - 1);
-            String 
+            int year = Integer.valueOf(str.substring(yearComma + 2, winnerStart - 1));
+            String winningTeam = str.substring(winnerStart + 1, scoreStart);
+            String score = str.substring(scoreStart + 1, loserStart);
+            String losingTeam = str.substring(loserStart + 1, venueStart);
+            String location = str.substring(locationStart + 2, locationComma);
 
+            Game superb = new Game(numeral, year, location, losingTeam, winningTeam, score);
+            superBowls.add(superb);
         }
     }
 
